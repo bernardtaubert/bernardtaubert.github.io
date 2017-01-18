@@ -16,7 +16,7 @@ A code searching tool for windows.
 
 ## How to Use 
 
-Run srch.exe and drag & drop a folder as your search path.
+Run srch.exe and drag & drop a folder you want to search.
 
 - CTRL + F<pre>-> Search text
 - CTRL + Shift + F<pre>-> Search files
