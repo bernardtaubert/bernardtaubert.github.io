@@ -8,7 +8,6 @@ A code searching tool for windows.
 - Parallel search threads
 - Utilizing char distribution (currently optimized for C)
 - RegEx
-- Drag and drop
 - Case-Sensitivity
 - Whole word Only
 - Extension filter
