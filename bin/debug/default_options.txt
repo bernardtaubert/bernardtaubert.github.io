@@ -13,7 +13,7 @@ EnableGlobalHotkey=1
 c;h
 
 <SourcePath>
-D:\p\da\me0\60a\dame0_0u0_60a\sourcecode_noComments
+D:\sourcecode_noComments
 
 <Editor1>
 "C:\Notepad++\notepad++.exe" %path -n%linenumber
