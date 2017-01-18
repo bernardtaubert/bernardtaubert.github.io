@@ -1305,17 +1305,6 @@ namespace Srch {
                     }
                 }
             }
-            //if (filePattern.Equals("*") || filePattern.Equals("")) { /* filter by extension */
-            //    for (int i = 0; i < tmpFiles.Length; i++) {
-            //        files.Add(tmpFiles[i]);
-            //    }
-            //} else {
-                //extensions = filePattern.Trim().Split(';');
-                //for (int i = 0; i < extensions.Length; i++) { /* cleanup extensions */
-                //    if (extensions[i].Equals(""))
-                //        
-                //}
-            //}
             int filesCount = files.Count;
             int filesPerThread = filesCount / threads;
             int[] filesPerThreadArr = new int[threads];
