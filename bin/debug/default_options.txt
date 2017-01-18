@@ -1,1 +1,34 @@
+<Options>
+Default=1
+CaseSensitive=0
+WholeWordsOnly=0
+RegEx=0
+OrderResults=0
+OnlyShow1EntryPerLine=1
+SearchSubDirectories=1
+SearchFilesSubDirectories=1
+EnableGlobalHotkey=1
+
+<Extensions>
+c;h
+
+<SourcePath>
+D:\p\da\me0\60a\dame0_0u0_60a\sourcecode_noComments
+
+<Editor1>
+"C:\LegacyApp\Notepad++\notepad++.exe" %path -n%linenumber
+
+<Editor2>
+Name=Seep
+D:\LegacyApp\SEEP\SEEP_6.3.1_64bit\seep.exe %path*%linenumber
+
+<Editor3>
+Name=UltraEdit
+"C:\Program Files\IDM Computer Solutions\UltraEdit\uedit64" %path/%linenumber
+
+<Fontsize>
+10
+
+<Color>
+0
 
