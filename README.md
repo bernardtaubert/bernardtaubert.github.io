@@ -11,7 +11,6 @@ A code searching tool for windows.
 - Case-Sensitivity
 - Whole word Only
 - Extension filter
-- Can remove comments of the C source to help improve the search speed
 - Drag & Drop
 - GUI
 
