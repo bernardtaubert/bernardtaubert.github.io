@@ -25,7 +25,7 @@ Run srch.exe and drag & drop a folder you want to search.
 - CTRL + ENTER<pre>Search selected text (global hotkey)
 - F1 to F12<pre>Load options from files
 
-Edit the .txt files in the root folder to specify the default search path etc.
+Edit the .txt files in the root folder to specify the default search path.
 
 ## Open Performance optimizations
 
