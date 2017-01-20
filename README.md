@@ -1,6 +1,6 @@
 # Srch
 
-A code searching tool for windows.
+A code searching tool for windows
 
 ## Features
 
