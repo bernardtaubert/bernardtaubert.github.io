@@ -41,7 +41,7 @@ Edit the .txt files in the root folder to specify the default search path.
 
 ## Usability improvements
 
-- Implement more intuitive color picker.
+- Implement a more intuitive color picker.
 - Highlight the searchstring in the results (a switch to richtext is needed).
 
 ## Contact
