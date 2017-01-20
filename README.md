@@ -29,7 +29,7 @@ Edit the .txt files in the root folder to specify the default search path.
 
 ## Open Performance optimizations
 
-1. Reduce the amount of exception handlers (try/catch)
+1. Reduce the amount of exception handlers (try/catch).
 2. Using the functionality encapsulated in the options class is convenient (e.g. options.GetValue(Options.AvailableOptions.SearchInComments)), but slows down the search queries (in the example case by ~30-40ms).
 
 ## Known Bugs
@@ -41,12 +41,12 @@ Edit the .txt files in the root folder to specify the default search path.
 
 ## Usability improvements
 
-- Implement more intuitive color picker
-- Highlight the searchstring in the results (a switch to richtext is needed)
+- Implement more intuitive color picker.
+- Highlight the searchstring in the results (a switch to richtext is needed).
 
 ## Contact
 
-If you find any bugs, please contact me at srch(dot)bughunting(at)googlemail(dot)com
+If you find any bugs, please contact me at srch(dot)bughunting(at)googlemail(dot)com.
 
 ## Compiling
 
