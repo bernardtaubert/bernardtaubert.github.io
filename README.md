@@ -47,7 +47,7 @@ Edit the .txt files in the root folder to specify the default search path.
 
 ## Contact
 
-If you find any bugs, please contact me at srch(dot)bughunting(at)googlemail(dot)com.
+If you find any bugs, please contact me at srch.bughunting(at)googlemail.com.
 
 ## Compiling
 
