@@ -38,6 +38,7 @@ Edit the .txt files in the root folder to specify the default search path.
 - Hotkeys only work in the first instance, other registrations fail.
 - Window does not redraw occasionally.
 - The source has to be cleaned up and reformatted.
+- Switching the directory, while a search is ongoing won't work.
 
 ## Usability improvements
 
