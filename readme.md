@@ -61,4 +61,4 @@ The application is compiled with
 
 ## Licensing
 
-[MIT](https://github.com/atom/atom/blob/master/LICENSE)
+[MIT](https://github.com/atom/atom/blob/master/LICENSE.md)
