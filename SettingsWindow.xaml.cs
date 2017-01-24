@@ -67,12 +67,19 @@ namespace Srch {
             string[] ext = tbExtensions.Text.Split(';');
             foreach (string s in ext) {
                 if (!s.Equals("")) {
+                    if (s.Equals("*")) {
+                        mainWindow.extensions.Clear();
+                        mainWindow.extensions.Add("*"); // wildcard found, so do not filter extensions
+                        break;
+                    }
                     Match match = Regex.Match(s, "^[a-zA-Z][a-zA-Z0-9]*$");
                     if (match.Success) {
                         mainWindow.extensions.Add(s);
                     }
                 }
             }
+            if (mainWindow.extensions.Count == 0)
+                mainWindow.extensions.Add("*"); // use wildcard 
         }
         internal void UpdateFontSize() {
             try {
