@@ -1143,13 +1143,7 @@ namespace Srch {
                 tbMainText("Searching for <" + searchString + ">\n");
                 await Task.Run(() => SetupSearchFilesThreads(searchString, filePattern));
             } else {
-                if (searchInProgress) { /* cancel ongoing search */
-                    cancelSearch = true;
-                    for (int i = 0; i < threads; i++) {
-                        if (cancelSearchArr[i] != null)
-                            cancelSearchArr[i].Cancel();
-                    }
-                }
+                CancelSearch();
                 while (searchInProgress) ; /* wait until search has stopped */
                 if (filePattern.Equals("")) filePattern = "*";
                 cancelSearch = false;
@@ -1194,11 +1188,16 @@ namespace Srch {
                     searchInProgress = false;
                     return;
                 }
-                for (int i = 0; i < tmpFiles.Length; i++) {
-                    string fileToLower = tmpFiles[i].ToLower();
-                    foreach (string ext in extensions) {
-                        if (fileToLower.EndsWith(ext.ToLower()))
-                            files.Add(tmpFiles[i]);
+                if (extensions[0].Equals("*"))
+                    for (int i = 0; i < tmpFiles.Length; i++)
+                        files.Add(tmpFiles[i].ToLower()); /* do not filter files, just add them as is */
+                else {
+                    for (int i = 0; i < tmpFiles.Length; i++) {
+                        string fileToLower = tmpFiles[i].ToLower();
+                        foreach (string ext in extensions) {
+                            if (fileToLower.EndsWith("." + ext.ToLower()))
+                                files.Add(tmpFiles[i]);
+                        }
                     }
                 }
             }
@@ -1241,13 +1240,7 @@ namespace Srch {
                 tbMainText("Searching for <" + searchString + ">\n");
                 await Task.Run(() => SetupSearchThreads(searchString, filePattern));
             } else {
-                if (searchInProgress) { /* cancel ongoing search */
-                    cancelSearch = true;
-                    for (int i = 0; i < threads; i++) {
-                        if (cancelSearchArr[i] != null)
-                            cancelSearchArr[i].Cancel();
-                    }
-                }
+                CancelSearch();
                 while(searchInProgress); /* wait until search has stopped */
                 if (filePattern.Equals("")) filePattern = "*";
                 cancelSearch = false;
@@ -1297,11 +1290,16 @@ namespace Srch {
                     searchInProgress = false;
                     return;
                 }
-                for (int i = 0; i < tmpFiles.Length; i++) {
-                    string fileToLower = tmpFiles[i].ToLower();
-                    foreach (string ext in extensions) {
-                        if (fileToLower.EndsWith(ext.ToLower()))
-                            files.Add(tmpFiles[i]);
+                if (extensions[0].Equals("*"))
+                    for (int i = 0; i < tmpFiles.Length; i++)
+                        files.Add(tmpFiles[i].ToLower()); /* do not filter files, just add them as is */
+                else {
+                    for (int i = 0; i < tmpFiles.Length; i++) {
+                        string fileToLower = tmpFiles[i].ToLower();
+                        foreach (string ext in extensions) {
+                            if (fileToLower.EndsWith("." + ext.ToLower()))
+                                files.Add(tmpFiles[i]);
+                        }
                     }
                 }
             }
@@ -1452,6 +1450,15 @@ namespace Srch {
                 }
             } catch (Exception e) {
                 tbMainText("Error: Unknown Error when opening the Editor.");
+            }
+        }
+        private void CancelSearch() {
+            if (searchInProgress) { /* cancel ongoing search */
+                cancelSearch = true;
+                for (int i = 0; i < threads; i++) {
+                    if (cancelSearchArr[i] != null)
+                        cancelSearchArr[i].Cancel();
+                }
             }
         }
         private async void OpenEditorAsync(ProcessStartInfo startInfo) {
@@ -1975,12 +1982,19 @@ namespace Srch {
                                     this.extensions.Clear();
                                     for (int i = 0; i < extensions.Length; i++) { /* cleanup extensions */
                                         if (!extensions[i].Equals("")) {
+                                            if (extensions[i].Equals("*")) {
+                                                this.extensions.Clear();
+                                                this.extensions.Add("*"); // wildcard found, so do not filter extensions
+                                                break;
+                                            }
                                             Match match = Regex.Match(extensions[i], "^[a-zA-Z][a-zA-Z0-9]*$");
                                             if (match.Success) {
                                                 this.extensions.Add(extensions[i]);
                                             }
                                         }
                                     }
+                                    if (extensions.Length == 0)
+                                        this.extensions.Add("*"); // use wildcard 
                                 }
                             }
                             break;
@@ -2113,18 +2127,12 @@ namespace Srch {
                 settingsWindow.Show();
             }
             if (e.Key == Key.Q && ((Keyboard.Modifiers & (ModifierKeys.Control)) == (ModifierKeys.Control))) {
-                if (searchInProgress) {
-                    cancelSearch = true;
-                    for (int i = 0; i < threads; i++) {
-                        if (cancelSearchArr[i] != null)
-                            cancelSearchArr[i].Cancel();
-                    }
-                }
+                CancelSearch();
             }
             if (Keyboard.IsKeyDown(Key.F10)) { // this is to work around the windows default operation when pressing F10 key, which is to activate the window menu bar
-                    ParseOptionsFromFile("F10.txt");
-                    PrintCurrentSearchPath();
-                    e.Handled = true;
+                ParseOptionsFromFile("F10.txt");
+                PrintCurrentSearchPath();
+                e.Handled = true;
             }
             switch (e.Key) {
                 case Key.Home: // && ((Keyboard.Modifiers & (ModifierKeys.Control)) == (ModifierKeys.Control))) {
