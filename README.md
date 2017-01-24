@@ -18,12 +18,12 @@ A code searching tool for windows
 
 Run srch.exe and drag & drop a folder you want to search.
 
-- CTRL + F<pre>Search text
-- CTRL + Shift + F<pre>Search files
-- CTRL + Q<pre>Cancel search
-- CTRL + S<pre>Settings
-- CTRL + ENTER<pre>Search selected text (global hotkey)
-- F1 to F12<pre>Load options from files
+- CTRL + F<pre>Search text</pre>
+- CTRL + Shift + F<pre>Search files</pre>
+- CTRL + Q<pre>Cancel search</pre>
+- CTRL + S<pre>Settings</pre>
+- CTRL + ENTER<pre>Search selected text (global hotkey)</pre>
+- F1 to F12<pre>Load options from files</pre>
 
 Edit the .txt files in the root folder to specify the default search path.
 
