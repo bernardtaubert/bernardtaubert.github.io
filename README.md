@@ -39,6 +39,7 @@ Edit the .txt files in the root folder to specify the default search path.
 - Window does not redraw occasionally.
 - The source has to be cleaned up and reformatted.
 - Switching the directory, while a search is ongoing won't work.
+- Fast RegEx contains a bug, where . isn't processed properly
 
 ## Usability improvements
 
