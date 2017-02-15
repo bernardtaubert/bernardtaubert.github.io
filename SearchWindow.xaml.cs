@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,8 +22,14 @@ namespace Srch {
         MainWindow mainWindow;
         public bool IsOpened = false;
         private bool show1EntryPerLineState;
-
         public SearchWindow(MainWindow mainWindow) {
+            InitializeWindow(mainWindow);
+        }
+        public SearchWindow(MainWindow mainWindow, string filename) {
+            InitializeWindow(mainWindow);
+            tbFilePattern.Text = filename;
+        }
+        public void InitializeWindow(MainWindow mainWindow) {
             InitializeComponent();
             this.mainWindow = mainWindow;
             cbCaseSensitive.IsChecked = mainWindow.options.GetValue(Options.AvailableOptions.CaseSensitive);
@@ -36,7 +42,7 @@ namespace Srch {
             } else {
                 cbOnlyShow1EntryPerLine.IsChecked = mainWindow.options.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine);
                 show1EntryPerLineState = (bool)cbOnlyShow1EntryPerLine.IsChecked;
-            }            
+            }
             rbFastRegEx.IsChecked = mainWindow.options.GetValue(Options.AvailableOptions.FastRegEx);
             rbDefault.IsChecked = mainWindow.options.GetValue(Options.AvailableOptions.Default);
             cbSearchSubDirectories.IsChecked = mainWindow.options.GetValue(Options.AvailableOptions.SearchSubDirectories);
