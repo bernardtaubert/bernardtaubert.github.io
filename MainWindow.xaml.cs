@@ -2296,11 +2296,27 @@ namespace Srch {
             int idx = tbMain.GetCharacterIndexFromPoint(pt, true);
             string path = tbMain.GetLineText(tbMain.GetLineIndexFromCharacterIndex(idx)).Split('\t')[0];
             if (File.Exists(path)) {
-                string sLinenumber = tbMain.GetLineText(tbMain.GetLineIndexFromCharacterIndex(idx)).Split('\t')[1];
                 try { // open the specified Editor and open the file under cursor at the specified line
                     System.Diagnostics.Process.Start("explorer.exe", string.Format("/select, \"{0}\"", path));
                 } catch (Exception ex) {
                     MessageBox.Show("Error when trying to open the Editor\n" + ex.StackTrace);
+                }
+            }
+        }
+        private void OnClickMenuSearchInFile(object sender, RoutedEventArgs e) {
+            Point pt = PtMouseDown;
+            pt.X = 0;
+            int idx = tbMain.GetCharacterIndexFromPoint(pt, true);
+            string path = tbMain.GetLineText(tbMain.GetLineIndexFromCharacterIndex(idx)).Split('\t')[0];
+            FileInfo f = new FileInfo(path);
+            if (File.Exists(f.FullName)) {
+                if (searchWindow != null && searchWindow.IsOpened) {
+                    searchWindow.Focus();
+                    searchWindow.tbSearchBoxSelectAll();
+                    searchWindow.tbFilePattern.Text = f.Name;
+                } else {
+                    searchWindow = new SearchWindow(this, f.Name);
+                    searchWindow.Show();
                 }
             }
         }

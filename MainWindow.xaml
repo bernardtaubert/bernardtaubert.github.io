@@ -15,7 +15,8 @@
                         <MenuItem Header="Open with " x:Name="miEditor2" Click="OnClickMenuItemEditor2"/>
                         <MenuItem Header="Open with " x:Name="miEditor3" Click="OnClickMenuItemEditor3"/>
                         <MenuItem Header="Open containing folder" x:Name="miOpenFolder" Click="OnClickMenuItemOpenFolder"/>
-                    </ContextMenu>
+                        <MenuItem Header="Search in file" x:Name="miSearchInFile" Click="OnClickMenuSearchInFile"/>
+                </ContextMenu>
                 </TextBox.ContextMenu>
             </TextBox>
     </DockPanel>

@@ -151,7 +151,8 @@ namespace Srch
         private bool CompareRegEx(string line, RegexOptions regExOptions) { // performs the comparison
             int i = 0;
             int linePos = 0;
-            int currentWildCard = 0;                
+            int currentWildCard = 0;
+            bool checkOnGoing = false;
             if (line.Length == 0)
                 return false;
             if (searchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx starts with ^
@@ -182,14 +183,25 @@ namespace Srch
                 }
                 switch (currentWildCard) {
                     case (int)wildCard.none:
-                        // first, find the starting position IndexOf inside the line and adjust the linePos to the new position
-                        linePos = line.IndexOf(searchString[i]);
-                        if (linePos == -1) return false;
+                        if (!checkOnGoing) {
+                            // first, find the starting position IndexOf inside the line and adjust the linePos to the new position
+                            linePos = line.IndexOf(searchString[i], linePos);
+                            if (linePos == -1) return false;
+                            checkOnGoing = true;
+                        }
                         if (linePos < line.Length) { // then check if there is a match
-                            if (searchString[i] != line[linePos])
-                                return false;
-                            i++; // if the chars match, simply advance both indices to proceed
-                            linePos++; 
+                            if (searchString[i] != line[linePos]) {
+                                if (searchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx started with ^
+                                    return false; // abort search
+                                } else {
+                                    i = 0; // if RegEx didn't start with ^ then reset search
+                                    checkOnGoing = false;
+                                }
+                                break;
+                            } else {
+                                i++; // if the chars match, simply advance both indices to proceed
+                                linePos++;
+                            }
                         } else
                             return false;
                         break;
@@ -198,6 +210,7 @@ namespace Srch
                             return false;
                         i++; // no match is needed, simply advance the indices to proceed
                         linePos++;
+                        currentWildCard = (int)wildCard.none;
                         break;                       
                     case (int)wildCard.asterisk:
                         if ((i + 1) < noOfChars) {
@@ -249,6 +262,12 @@ namespace Srch
                                     linePos = foundAt + s.Length; // advance the linePos to the position 1 character after the found string
                                 }
                                 if ((i + 1) >= noOfChars) {
+                                    if (specialCharAtIdx[noOfChars - 1] == true && searchString[noOfChars - 1].Equals('$')) { // if the last char equals '$'
+                                        if (linePos > line.Length - 1)
+                                            return true;
+                                        else
+                                            return false;
+                                    } 
                                     return true; // finish, when the end of the searchString has been reached
                                 }
                             }
