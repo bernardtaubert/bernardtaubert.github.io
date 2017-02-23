@@ -153,17 +153,26 @@ namespace Srch
             int linePos = 0;
             int currentWildCard = 0;
             bool checkOnGoing = false;
-            if (line.Length == 0)
+            string tmpLine = null;
+            string tmpSearchString = null;
+            if (regExOptions == RegexOptions.IgnoreCase) {
+                tmpLine = line.ToLower();
+                tmpSearchString = searchString.ToLower();
+            } else {
+                tmpLine = line;
+                tmpSearchString = searchString;
+            }
+            if (tmpLine.Length == 0)
                 return false;
-            if (searchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx starts with ^
-                if (searchString[1] != line[0])
+            if (tmpSearchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx starts with ^
+                if (tmpSearchString[1] != tmpLine[0])
                     return false;
                 else
                     i = 1;
             }
             while (i < noOfChars) {
                 if (specialCharAtIdx[i]) { // determine if there is a special char at the index
-                    switch (searchString[i]) { // determine which special char it is
+                    switch (tmpSearchString[i]) { // determine which special char it is
                         case '.':
                             currentWildCard = (int)wildCard.dot; // exactly one character of any kind
                             break;
@@ -171,7 +180,7 @@ namespace Srch
                             currentWildCard = (int)wildCard.asterisk; // zero or more characters of any kind
                             break;
                         case '$':
-                            if (linePos >= line.Length)
+                            if (linePos >= tmpLine.Length)
                                 return true;  // upon reaching the end of line - if there was not an error yet - the match is valid
                             else 
                                 return false; // else no match
@@ -185,13 +194,13 @@ namespace Srch
                     case (int)wildCard.none:
                         if (!checkOnGoing) {
                             // first, find the starting position IndexOf inside the line and adjust the linePos to the new position
-                            linePos = line.IndexOf(searchString[i], linePos);
+                            linePos = tmpLine.IndexOf(tmpSearchString[i], linePos);
                             if (linePos == -1) return false;
                             checkOnGoing = true;
                         }
-                        if (linePos < line.Length) { // then check if there is a match
-                            if (searchString[i] != line[linePos]) {
-                                if (searchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx started with ^
+                        if (linePos < tmpLine.Length) { // then check if there is a match
+                            if (tmpSearchString[i] != tmpLine[linePos]) {
+                                if (tmpSearchString[0] == '^' && specialCharAtIdx[0]) { // if RegEx started with ^
                                     return false; // abort search
                                 } else {
                                     i = 0; // if RegEx didn't start with ^ then reset search
@@ -206,7 +215,7 @@ namespace Srch
                             return false;
                         break;
                     case (int)wildCard.dot:
-                        if (linePos > line.Length - 1) // but abort, if the dot is located beyond the line end
+                        if (linePos > tmpLine.Length - 1) // but abort, if the dot is located beyond the line end
                             return false;
                         i++; // no match is needed, simply advance the indices to proceed
                         linePos++;
@@ -215,9 +224,9 @@ namespace Srch
                     case (int)wildCard.asterisk:
                         if ((i + 1) < noOfChars) {
                             if (specialCharAtIdx[i + 1]) { // determine if there is a special char at the NEXT index
-                                switch (searchString[i + 1]) { // determine which special char it is
+                                switch (tmpSearchString[i + 1]) { // determine which special char it is
                                     case '$':
-                                        if (linePos >= line.Length)
+                                        if (linePos >= tmpLine.Length)
                                             return true;  // upon reaching the end of line - if there was not an error yet - the match is valid
                                         else
                                             return true; // if there was not an error yet - the *$ match is valid 
@@ -229,7 +238,7 @@ namespace Srch
                                 int linePosStart = linePos;
                                 while ((i + 1) < noOfChars) {
                                     if (!specialCharAtIdx[i + 1]) {
-                                        s += searchString[i + 1];
+                                        s += tmpSearchString[i + 1];
                                         i++;
                                     } else {
                                         i++;
@@ -238,7 +247,7 @@ namespace Srch
                                 }
                                 // either reached the end of the string or found another RegEx character, anyway for now, just search the remaining non special chars
                                 if (s == "") {
-                                    if (i >= line.Length)
+                                    if (i >= tmpLine.Length)
                                         return true;  // upon reaching the end of line - if there was not an error yet - the match is valid
                                     else
                                         return false; // invalid RegEx
@@ -246,24 +255,24 @@ namespace Srch
                                 int foundAt = -1;
                                 if (linePos < 1) { // we might need to decrement the current linePos, if we have asterisk wildchar chains like e.g. x*x*x
                                 } else {
-                                    if (line[linePos - 1] == s[0]) { // if the char before the asterisk wildcard was the same as the char after the wildcard e.g. x*x, then do not start the search at the already found character, but increment it by one
+                                    if (tmpLine[linePos - 1] == s[0]) { // if the char before the asterisk wildcard was the same as the char after the wildcard e.g. x*x, then do not start the search at the already found character, but increment it by one
                                         linePosStart += 2;
-                                        if (linePosStart > line.Length)
+                                        if (linePosStart > tmpLine.Length)
                                             return false;
                                     }
                                 }
                                 if (linePosStart < 2)
-                                    foundAt = StringUtil.IndexOf(line, s, 0);
+                                    foundAt = StringUtil.IndexOf(tmpLine, s, 0);
                                 else 
-                                    foundAt = StringUtil.IndexOf(line, s, linePosStart - 2);
+                                    foundAt = StringUtil.IndexOf(tmpLine, s, linePosStart - 2);
                                 if (foundAt == -1)
                                     return false;
                                 else {
                                     linePos = foundAt + s.Length; // advance the linePos to the position 1 character after the found string
                                 }
                                 if ((i + 1) >= noOfChars) {
-                                    if (specialCharAtIdx[noOfChars - 1] == true && searchString[noOfChars - 1].Equals('$')) { // if the last char equals '$'
-                                        if (linePos > line.Length - 1)
+                                    if (specialCharAtIdx[noOfChars - 1] == true && tmpSearchString[noOfChars - 1].Equals('$')) { // if the last char equals '$'
+                                        if (linePos > tmpLine.Length - 1)
                                             return true;
                                         else
                                             return false;

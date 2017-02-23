@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -53,6 +53,7 @@ namespace Srch {
                 cbSearchBox.Items.Add(mainWindow.searchHistory.ElementAt(i));
             }
             tbSearchBox.Text = mainWindow.searchString;
+            tbFilePattern.Text = mainWindow.fileFilter;
             tbSearchBoxSelectAll();
             this.SizeToContent = SizeToContent.WidthAndHeight;
         }
@@ -61,6 +62,7 @@ namespace Srch {
             base.Show();
         }
         private void OnWindowClosing(object sender, CancelEventArgs e) {
+            mainWindow.fileFilter = tbFilePattern.Text;
             IsOpened = false;
         }
         private void cbCaseSensitiveCheckedChanged(object sender, RoutedEventArgs e) {

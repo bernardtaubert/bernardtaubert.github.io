@@ -33,6 +33,7 @@ namespace Srch {
                 cbSearchBox.Items.Add(mainWindow.searchFilesHistory.ElementAt(i));
             }
             tbSearchBox.Text = mainWindow.searchFilesString;
+            tbFilePattern.Text = mainWindow.fileSearchFileFilter;
             tbSearchBoxSelectAll();
             this.SizeToContent = SizeToContent.WidthAndHeight;
         }
@@ -41,6 +42,7 @@ namespace Srch {
             base.Show();
         }
         private void OnWindowClosing(object sender, CancelEventArgs e) {
+            mainWindow.fileSearchFileFilter = tbFilePattern.Text;
             IsOpened = false;
         }
         private void cbSearchFilesSubDirectoriesCheckedChanged(object sender, RoutedEventArgs e) {

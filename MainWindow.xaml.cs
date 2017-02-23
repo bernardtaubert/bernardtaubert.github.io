@@ -45,6 +45,8 @@ namespace Srch {
         private int parseOptions = 0;
         private string[] searchResults = null;
         internal string searchString = null;
+        internal string fileFilter = null;
+        internal string fileSearchFileFilter = null;
         internal string searchFilePattern = null;
         internal string searchFilesString = null;
         internal string editor1 = null;
