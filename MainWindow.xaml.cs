@@ -31,6 +31,7 @@ namespace Srch {
 
         // Runtime Data
         internal Options options = null;
+        private Options tmpOptions = null; // copy of Options while the search is ongoing
         enum ParseOptions {
             None,
             SearchOptions,
@@ -1083,7 +1084,7 @@ namespace Srch {
             var helper = new WindowInteropHelper(this);
             _source = HwndSource.FromHwnd(helper.Handle);
             _source.AddHook(HwndHook);
-            RegisterHotKey();
+            RegisterHotKey(); 
         }
         private void RegisterHotKey() {
             var helper = new WindowInteropHelper(this);
@@ -1161,10 +1162,13 @@ namespace Srch {
             Action action = () => { progressBar.IsIndeterminate = true; /* start animation */ };
             Dispatcher.Invoke(action);
             files = new List<string>(); // create an Array of search Files filtered by search pattern
-            foreach (string s in searchPaths) {
+            List<string> tmpSearchPaths = new List<string>(); tmpSearchPaths = this.searchPaths; // create a temporary copy of the working data while the search is ongoing.
+            List<string> tmpExtensions = new List<string>();  tmpExtensions = this.extensions;
+            tmpOptions = this.options;
+            foreach (string s in tmpSearchPaths) {
                 string[] tmpFiles = null;
                 try {
-                    if (options.GetValue(Options.AvailableOptions.SearchSubDirectories))
+                    if (tmpOptions.GetValue(Options.AvailableOptions.SearchSubDirectories))
                         tmpFiles = Directory.GetFiles(s, filePattern, SearchOption.AllDirectories);
                     else
                         tmpFiles = Directory.GetFiles(s, filePattern, SearchOption.TopDirectoryOnly);
@@ -1190,13 +1194,13 @@ namespace Srch {
                     searchInProgress = false;
                     return;
                 }
-                if (extensions[0].Equals("*"))
+                if (tmpExtensions[0].Equals("*"))
                     for (int i = 0; i < tmpFiles.Length; i++)
                         files.Add(tmpFiles[i].ToLower()); /* do not filter files, just add them as is */
                 else {
                     for (int i = 0; i < tmpFiles.Length; i++) {
                         string fileToLower = tmpFiles[i].ToLower();
-                        foreach (string ext in extensions) {
+                        foreach (string ext in tmpExtensions) {
                             if (fileToLower.EndsWith("." + ext.ToLower()))
                                 files.Add(tmpFiles[i]);
                         }
@@ -1263,10 +1267,13 @@ namespace Srch {
             Action action = () => { progressBar.IsIndeterminate = true; /* start animation */ };            
             Dispatcher.Invoke(action);
             files = new List<string>(); // create an Array of search Files filtered by search pattern
-            foreach (string s in searchPaths) {
+            List<string> tmpSearchPaths = new List<string>(); tmpSearchPaths = this.searchPaths; // create a temporary copy of the working data while the search is ongoing.
+            List<string> tmpExtensions = new List<string>();  tmpExtensions = this.extensions;
+            tmpOptions = this.options;
+            foreach (string s in tmpSearchPaths) {
                 string[] tmpFiles = null;
                 try {
-                    if (options.GetValue(Options.AvailableOptions.SearchSubDirectories))
+                    if (tmpOptions.GetValue(Options.AvailableOptions.SearchSubDirectories))
                         tmpFiles = Directory.GetFiles(s, filePattern, SearchOption.AllDirectories);
                     else
                         tmpFiles = Directory.GetFiles(s, filePattern, SearchOption.TopDirectoryOnly);
@@ -1292,13 +1299,13 @@ namespace Srch {
                     searchInProgress = false;
                     return;
                 }
-                if (extensions[0].Equals("*"))
+                if (tmpExtensions[0].Equals("*"))
                     for (int i = 0; i < tmpFiles.Length; i++)
                         files.Add(tmpFiles[i].ToLower()); /* do not filter files, just add them as is */
                 else {
                     for (int i = 0; i < tmpFiles.Length; i++) {
                         string fileToLower = tmpFiles[i].ToLower();
-                        foreach (string ext in extensions) {
+                        foreach (string ext in tmpExtensions) {
                             if (fileToLower.EndsWith("." + ext.ToLower()))
                                 files.Add(tmpFiles[i]);
                         }
@@ -1318,7 +1325,7 @@ namespace Srch {
                 start += filesPerThreadArr[i];
             }
             int optionId = 0; /* selector */
-            List<Option> oList = options.GetList();
+            List<Option> oList = tmpOptions.GetList();
             for (int i = 0; i < 4; i++) { /* first 4 options are the radio buttons to specifiy the RegEx mode */
                 if (oList[i].GetValue() == true)
                     optionId = i;
@@ -1327,12 +1334,12 @@ namespace Srch {
                 case (int)Options.AvailableOptions.Default:
                     charIndex = LanguageConventions.GetRarestCharIndex((string)searchString); // default search w/o RegEx speed can be improved by searching for the rarest char
                     searchChar = ((string)searchString)[charIndex];
-                    if (options.GetValue(Options.AvailableOptions.CaseSensitive)) {
+                    if (tmpOptions.GetValue(Options.AvailableOptions.CaseSensitive)) {
                         for (int i = 0; i < threads; i++) { // create multiple searchthreads
                             int id = i;
                             threadInProgress[id] = true;
                             try {
-                                await Task.Run(() => ParseFiles(filesArr[id].ToArray(), (string)searchString, Char.ToLower(searchChar), charIndex, id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
+                                await Task.Run(() => ParseFiles(filesArr[id].ToArray(), (string)searchString, searchChar, charIndex, id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
                             } catch (OperationCanceledException e) { break; }
                         }
                     } else {
@@ -1350,7 +1357,7 @@ namespace Srch {
                 case (int)Options.AvailableOptions.WholeWordsOnly:
                     charIndex = LanguageConventions.GetRarestCharIndex((string)searchString); // default search w/o RegEx speed can be improved by searching for the rarest char
                     searchChar = ((string)searchString)[charIndex];
-                    if (options.GetValue(Options.AvailableOptions.CaseSensitive)) {
+                    if (tmpOptions.GetValue(Options.AvailableOptions.CaseSensitive)) {
                         for (int i = 0; i < threads; i++) { // create multiple searchthreads
                             int id = i;
                             threadInProgress[id] = true;
@@ -1383,7 +1390,7 @@ namespace Srch {
                         int id = i;
                         threadInProgress[id] = true;
                         try {
-                            await Task.Run(() => ParseFilesFastRegEx(filesArr[id].ToArray(), fREx, options.GetValue(Options.AvailableOptions.CaseSensitive), id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
+                            await Task.Run(() => ParseFilesFastRegEx(filesArr[id].ToArray(), fREx, tmpOptions.GetValue(Options.AvailableOptions.CaseSensitive), id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
                         } catch (OperationCanceledException e) { break; }
                     }
                     break;
@@ -1399,7 +1406,7 @@ namespace Srch {
                             int id = i;
                             threadInProgress[id] = true;
                             try {
-                                await Task.Run(() => ParseFilesRegEx(filesArr[id].ToArray(), (string)searchString.ToLower(), options.GetValue(Options.AvailableOptions.CaseSensitive), id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
+                                await Task.Run(() => ParseFilesRegEx(filesArr[id].ToArray(), (string)searchString.ToLower(), tmpOptions.GetValue(Options.AvailableOptions.CaseSensitive), id, cancelSearchArr[id].Token), cancelSearchArr[id].Token);
                             } catch (OperationCanceledException e) { break; }
                         }
                     }
@@ -1513,7 +1520,7 @@ namespace Srch {
                                     } else {
                                         stringWriter.WriteLine(f.FullName + "\t" + "Error @ Index" + index);
                                     }
-                                    if (options.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
+                                    if (tmpOptions.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
                                         if (lineEnd != -1) /* end of file ? */
                                             index = text.IndexOf(searchChar, lineEnd + 1);
                                         else
@@ -1629,7 +1636,7 @@ namespace Srch {
                                     } else {
                                         stringWriter.WriteLine(f.FullName + "\t" + "Error @ Index" + index);
                                     }
-                                    if (options.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
+                                    if (tmpOptions.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
                                         if (lineEnd != -1) /* end of file ? */
                                             index = textToLower.IndexOf(searchChar, lineEnd + 1);
                                         else
@@ -1742,7 +1749,7 @@ namespace Srch {
                                         } else {
                                             stringWriter.WriteLine(f.FullName + "\t" + "Error @ Index" + index);
                                         }
-                                        if (options.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
+                                        if (tmpOptions.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
                                             if (lineEnd != -1) /* end of file ? */
                                                 index = text.IndexOf(searchChar, lineEnd + 1);
                                             else
@@ -1837,7 +1844,8 @@ namespace Srch {
                                             }
                                         }
                                     }
-                                    if (!(firstCharBlank && lastCharBlank)) { /* cancel, if not a whole word */
+                                    if (!(firstCharBlank && lastCharBlank)) { /* cancel and increment index, if not a whole word was found */
+                                        index++;
                                     } else {
                                         counter++;
                                         if (!foundInFile) {
@@ -1855,7 +1863,7 @@ namespace Srch {
                                         } else {
                                             stringWriter.WriteLine(f.FullName + "\t" + "Error @ Index" + index);
                                         }
-                                        if (options.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
+                                        if (tmpOptions.GetValue(Options.AvailableOptions.OnlyShow1EntryPerLine)) {
                                             if (lineEnd != -1) /* end of file ? */
                                                 index = textToLower.IndexOf(searchChar, lineEnd + 1);
                                             else
@@ -2092,8 +2100,14 @@ namespace Srch {
         }
         private void PrintCurrentSearchPath() {
             tbMainText("cd \n");
-            foreach (string s in searchPaths) {
-                tbMainAppend(s + "\n");
+            for (int i = 0; i < searchPaths.Count; i++) {
+                string s = searchPaths.ElementAt(i);
+                if (Directory.Exists(s))
+                    tbMainAppend(s + "\n");
+                else {
+                    tbMainAppend("Error: Search path not found: " + s + System.Environment.NewLine);
+                    searchPaths.RemoveAt(i);
+                }
             }
         }
         private void OnTbMainPreviewKeyDown(object sender, KeyEventArgs e) {
