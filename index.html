@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+&nbsp;<!DOCTYPE html>
 <html><head><title>Repository Browser</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 /*=========== DOCUMENT SETTINGS ===========*/
 body             {
-                  background-color:#444277;
-                  margin-bottom:21;
-                  background-image:url(Pictures/Background.png);
-                  background-repeat:repeat-xy;
+                  background-color:#444277; /* for browsers that do not support gradients */
+                  background-image: linear-gradient(140deg, #242247 0%, #444277 40%, #9C8094 75%, #BFD641 100%);
+                  background-repeat:no-repeat;
+                  opacity:0.95;
                   margin-top:0;
+                  margin-bottom:21;
                   color:White;
                   font-size:10pt;
                   font-weight:normal;
@@ -38,8 +39,10 @@ table, td        {
 /*============ IMAGES ============*/
 img {
   border-collapse: collapse;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
+  border-top: 3px solid #8899EF;
+  border-bottom: 3px solid #8899EF;
+  border-right: 1px solid #8899EF;
+  border-left: 1px solid #8899EF;
 }
 
 .container {
@@ -47,34 +50,36 @@ img {
   width: 50%;
 }
 
-.container:hover .overlay {
+.container:hover .transparent {
   opacity: 1;
 }
 
-.overlay {
+.container:hover .small {
+  opacity: 1;
+}
+
+.transparent {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
+  opacity: 0.74;
   transition: .5s ease;
 }
 
 /*========== FONTSTYLES ==========*/
 .Regular                                 { font-size:10pt; color:#FFFFFF; }
-a:link, a.Regular:link                   { color:#A9ADFA; text-decoration:none; font-weight: bolder;}
-a:visited, a.Regular:visited             { color:#A1A2EA; text-decoration:none; border-bottom:solid 1px white; }
+a:link, a.Regular:link                   { color:#89ADFA; text-decoration:none; font-weight: bolder;}
+a:visited, a.Regular:visited             { color:#81A2EA; text-decoration:none; border-bottom:solid 1px white; }
 a:active, a.Regular:active               { color:#FFFFFF; text-decoration:none; border-bottom:solid 1px white; }
-a:hover, a.Regular:hover                 { color:#B8C9FF; text-decoration:none; border-bottom:solid 2px white; }
+a:hover, a.Regular:hover                 { color:#98C9FF; text-decoration:none; border-bottom:solid 2px white; }
 
 .Small                                   { font-size:9pt; color:#9889CF; }
-a:link, a.Small:link                     { color:#A9ADFA; text-decoration:none; font-weight: normal;}
-a:visited, a.Small:visited               { color:#A9ADFA; text-decoration:none; border-bottom:solid 1px white; }
+a:link, a.Small:link                     { color:#89ADFA; text-decoration:none; font-weight: normal;}
+a:visited, a.Small:visited               { color:#89ADFA; text-decoration:none; border-bottom:solid 1px white; }
 a:active, a.Small:active                 { color:#FFFFFF; text-decoration:none; border-bottom:solid 1px white; }
-a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; border-bottom:solid 2px #B8C9FF; }
+a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; border-bottom:solid 2px white; }
 /*========== HEADLINES ==========*/
  h2
 {
@@ -96,31 +101,33 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
 </head>
 <body>
 <center>
-  <table>
-    <tr>
+  <table width=1400>
+    <tr height=360>
       <td width=300>
         <h1>Srch</h1>
         <p>A code searching tool for windows.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/srch">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/srch"><img src="Pictures/Srch.png" width=300></img></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/srch"><div class="container"><img class="transparent" src="Pictures/Srch.png" width=300></img></div></a></p>
       </td>
       <td width=300>
         <h1>Madoc</h1>
         <p>Mark down converter and formatter.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/madoc">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/madoc"><img src="Pictures/Madoc.png" width=300></img></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/madoc"><div class="container"><img class="transparent" src="Pictures/Madoc.png" width=300></img></div></a></p>
       </td>
       <td width=300>
         <h1>Wordcloud</h1>
         <p>A wordcloud generator for GTK 2+.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/wordcloud">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/wordcloud"><img src="Pictures/Wordcloud.png" width=300></img></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/wordcloud"><div class="container"><img class="transparent" src="Pictures/Wordcloud.png" width=300></img></div></a></p>
       </td>      
       <td width=300>
         <h1>Helpers</h1>
         <p>Small helper scripts written in Python.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/helpers">Repository</p>
-          <div class="Small" style="padding: 8px 0 0 10px; height: 140px; width: 300px;position:fixed;0;top:300">
+        <div class="container">
+          <img class="transparent" src="Pictures/Helpers.png" width=300></img>
+          <div class="Small" style="padding: 8px 0 0 10px; height: 140px; width: 300px;position:absolute;0;top:0">
           <a href="https://github.com/bernardtaubert/helpers">
           <p>• append (incrementing) numbers to string.</p>
           <p>• filter duplicate lines from file.</p>
@@ -128,8 +135,9 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
           <p>• remove comments from c/h files.</p>
           <p>• replace multiple strings in a file by a dictionary.</p>
           <p>• hexadecimal conversion.</p>
+          <p>• remove silence from wav files.</p>
           </div>
-        <p><img src="Pictures/Helpers.png" width=300></img></a></p>
+        <p></div></a></p>
       </td>      
     </tr>
     <tr>
@@ -137,13 +145,13 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
         <h1>Callstack</h1>
         <p>This C# script creates a calltree of all calling functions that call the named function.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/callstack">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/callstack"><img src="Pictures/Callstack.png" width=300></img></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/callstack"><div class="container"><img class="transparent" src="Pictures/Callstack.png" width=300></img></div></a></p>
       </td>    
       <td>
         <h1>IoHooks</h1>
         <p>This C# script attaches itself to the mouse and keyboard input and output.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/iohooks">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/iohooks"><img src="Pictures/IoHooks.png" width=300></img></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/iohooks"><div class="container"><img class="transparent" src="Pictures/IoHooks.png" width=300></img></div></a></p>
       </td>   
     </tr>    
   </table>
