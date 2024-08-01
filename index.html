@@ -2,24 +2,19 @@
 <html><head><title>Repository Browser</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 /*=========== DOCUMENT SETTINGS ===========*/
-html             {
-                  height: 100%;
-                 }
 body             {
-                  background-color:#444277; /* for browsers that do not support gradients */
-                  background-image: linear-gradient(140deg, #242247 0%, #444277 40%, #9C8094 75%, #BFD641 100%);
+                  background-color: #425088; /* for browsers that do not support gradients */                  
+                  background-image: linear-gradient(140deg, #242247 0%, #211B58 5%, #6075C9 35%, #9494B4 65%, #DDDDDD 100%);
                   background-repeat:no-repeat;
                   background-attachment: fixed;
                   opacity:0.95;
-                  height: 100%;
-                  min-height: 100%;
                   margin-top:0;
                   margin-bottom:21;
                   color:White;
                   font-size:10pt;
                   font-weight:normal;
                   text-decoration:none;
-                  font-family:"Arial";
+                  font-family:"Calibri";
                  }
 
 table, td        {
@@ -53,7 +48,7 @@ img {
 
 .container {
   position: relative;
-  width: 50%;
+  width: 84%;
 }
 
 .container:hover .transparent {
@@ -70,23 +65,50 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
-  opacity: 0.74;
+  opacity: 0.84;
+  transition: .5s ease;
+}
+
+.container_bright {
+  position: relative;
+  width: 84%;
+}
+
+.container_bright:hover .transparent_bright {
+  opacity: 1;
+}
+
+.transparent_bright {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.84;
   transition: .5s ease;
 }
 
 /*========== FONTSTYLES ==========*/
-.Regular                                 { font-size:10pt; color:#FFFFFF; }
-a:link, a.Regular:link                   { color:#89ADFA; text-decoration:none; font-weight: bolder;}
-a:visited, a.Regular:visited             { color:#81A2EA; text-decoration:none; border-bottom:solid 1px white; }
-a:active, a.Regular:active               { color:#FFFFFF; text-decoration:none; border-bottom:solid 1px white; }
-a:hover, a.Regular:hover                 { color:#98C9FF; text-decoration:none; border-bottom:solid 2px white; }
+.Small                                   { font-size:9pt; color:black; }
+a.Small:link                             { color:#486acd; text-decoration:none;}
+a.Small:visited                          { color:#486acd; text-decoration:none;}
+a.Small:active                           { color:#486acd; text-decoration:none;}
+a.Small:hover                            { color:#486acd; text-decoration:none;}
 
-.Small                                   { font-size:9pt; color:#9889CF; }
-a:link, a.Small:link                     { color:#89ADFA; text-decoration:none; font-weight: normal;}
-a:visited, a.Small:visited               { color:#89ADFA; text-decoration:none; border-bottom:solid 1px white; }
-a:active, a.Small:active                 { color:#FFFFFF; text-decoration:none; border-bottom:solid 1px white; }
-a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; border-bottom:solid 2px white; }
+.Regular                                 { font-size:12pt; color:#BAD5F5; }
+a:link, a.Regular:link                   { color:#BAD5F5; text-decoration:none; }
+a:visited, a.Regular:visited             { color:#AAC5F5; text-decoration:none; border-bottom:solid 1px black; }
+a:active, a.Regular:active               { color:#7b95e5; text-decoration:none; border-bottom:solid 1px black; }
+a:hover, a.Regular:hover                 { color:#C5D4f7; text-decoration:none; border-bottom:solid 2px black; }
+
 /*========== HEADLINES ==========*/
+h1
+{
+  margin-top: 0px;
+  padding-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
  h2
 {
   margin-top: 30px;
@@ -107,13 +129,13 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
 </head>
 <body>
 <center>
-  <table width=1400 height=750>
+  <table width=1400 height="700">
     <tr height=360>
       <td width=300>
-        <h1>Srch</h1>
+        <h1>Search</h1>
         <p>A code searching tool for windows.</p>
         <p><a class="Regular" href="https://github.com/bernardtaubert/srch">Repository</a></p>
-        <p><a class="Small" href="https://github.com/bernardtaubert/srch"><div class="container"><img class="transparent" src="Pictures/Srch.png" width=300></img></div></a></p>
+        <p><a class="Small" href="https://github.com/bernardtaubert/srch"><div class="container_bright"><img class="transparent_bright" src="Pictures/Srch.png" width=300></img></div></a></p>
       </td>
       <td width=300>
         <h1>Madoc</h1>
@@ -133,7 +155,7 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
         <p><a class="Regular" href="https://github.com/bernardtaubert/helpers">Repository</p>
         <div class="container">
           <img class="transparent" src="Pictures/Helpers.png" width=300></img>
-          <div class="Small" style="padding: 8px 0 0 10px; height: 140px; width: 300px;position:absolute;0;top:0">
+          <div class="Small" style="padding: 12px 0 0 10px; height: 140px; width: 300px;position:absolute;0;top:0">
           <a href="https://github.com/bernardtaubert/helpers">
           <p>• append (incrementing) numbers to string.</p>
           <p>• filter duplicate lines from file.</p>
@@ -145,6 +167,8 @@ a:hover, a.Small:hover                   { color:#B8C9FF; text-decoration:none; 
           </div>
         <p></div></a></p>
       </td>      
+    </tr>
+    <tr height="30">
     </tr>
     <tr>
       <td>
